@@ -1,0 +1,28 @@
+services:
+  agent:
+    build: ./agent
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: host
+    volumes:
+      - ./agent/models:/models
+
+  server:
+    build: ./server
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "3000:3000"
+    restart: always
