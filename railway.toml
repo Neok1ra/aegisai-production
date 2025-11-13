@@ -1,18 +1,28 @@
 # railway.toml
-$schema = 'https://railway.app/railway.schema.json'
-
 [build]
 builder = "NIXPACKS"
 
 [[services]]
-[services.web]
+name = "server"
+[services.build]
+command = "pip install -r requirements.txt"
+[services.start]
 command = "cd server && uvicorn main:app --host 0.0.0.0 --port $PORT"
 
-[[services.dashboard]]
+[[services]]
+name = "dashboard"
+[services.build]
+command = "cd dashboard && npm install && npm run build"
+[services.start]
 command = "cd dashboard && npm start"
 
-[[services.agent]]
+[[services]]
+name = "agent"
+[services.build]
+command = "cd agent && pip install -r requirements.txt"
+[services.start]
 command = "cd agent && python aegis_agent.py"
 
-[[services.redis]]
+[[services]]
+name = "redis"
 image = "redis:7-alpine"
